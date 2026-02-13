@@ -38,34 +38,34 @@ func go_to_node(node: StoryNode) -> void:
 func rebuild_choices(choice_list: Array[Choice]) -> void:
 	clear_choices()
 
-	for c in choice_list:
-		if not is_instance_valid(c): # This likely won't happen, but just in case...
+	for choice in choice_list:
+		if not is_instance_valid(choice): # This likely won't happen, but just in case...
 			continue
 
-		if not choice_is_visible(c): # Check the condition for this choice, move on if not met
+		if not choice_is_visible(choice): # Check the condition for this choice, move on if not met
 			continue
 
-		var b := Button.new()
-		choices_box.add_child(b)
-		b.text = c.label
+		var button := Button.new()
+		choices_box.add_child(button)
+		button.text = choice.label
 		# This could be where some extra formatting options are set.
 		# Or, we could create a new scene with just a button inside it, then load that scene in
 		#    _ready and instantiate it here, with formatting all set up and ready to go.
 
 		# Connect a lambda function to the button's pressed signal
 		# We could absolutely create a function and pass it as a reference below, but this works just as well
-		b.pressed.connect(func():
-			try_apply_action(c.do)
+		button.pressed.connect(func():
+			try_apply_action(choice.do)
 
-			var target: StoryNode = resolve_story_node_from_path(c.go_to, current_node)
+			var target: StoryNode = resolve_story_node_from_path(choice.go_to, current_node)
 			# Try a couple more reasonable anchors, since the go_to variable is a relative path
 			if target == null:
-				target = resolve_story_node_from_path(c.go_to, nodes_root)
+				target = resolve_story_node_from_path(choice.go_to, nodes_root)
 			if target == null:
-				target = resolve_story_node_from_path(c.go_to, self)
+				target = resolve_story_node_from_path(choice.go_to, self)
 
 			if target == null:
-				push_warning("Choice '%s' go_to (current node: %s) did not resolve: %s" % [c.label, current_node.name, str(c.go_to)])
+				push_warning("Choice '%s' go_to (current node: %s) did not resolve: %s" % [choice.label, current_node.name, str(choice.go_to)])
 				return
 
 			go_to_node(target)
@@ -237,3 +237,5 @@ func resolve_story_node_from_path(path: NodePath, anchor: Node) -> StoryNode:
 func clear_choices() -> void:
 	for child in choices_box.get_children():
 		child.queue_free()
+
+#endregion

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ittcadmyqm8"]
+[gd_scene load_steps=15 format=3 uid="uid://ittcadmyqm8"]
 
 [ext_resource type="Script" uid="uid://bxm6v1dit5w7v" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://c688nq8fsmev7" path="res://story_scripts/story_node.gd" id="1_ig7tw"]
@@ -65,6 +65,13 @@ label = "End Game"
 go_to = NodePath("../../end_bad")
 metadata/_custom_type_script = "uid://cgyk67vv44138"
 
+[sub_resource type="Resource" id="Resource_efxa6"]
+script = ExtResource("2_0xm2m")
+label = "Restart"
+go_to = NodePath("../start")
+do = "set has_key false"
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
 [node name="Main" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -80,10 +87,10 @@ unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 42.0
-offset_top = 37.0
-offset_right = -41.0
-offset_bottom = 246.0
+offset_left = 98.0
+offset_top = 29.0
+offset_right = -84.0
+offset_bottom = 244.0
 grow_horizontal = 2
 label_settings = SubResource("LabelSettings_7dm0k")
 autowrap_mode = 3
@@ -97,9 +104,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -18.0
-offset_top = -280.0
-offset_right = 18.0
+offset_left = -275.0
+offset_top = -270.0
+offset_right = 275.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -134,6 +141,7 @@ choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_4c57u")])
 [node name="end_ok" type="Node" parent="Nodes"]
 script = ExtResource("1_ig7tw")
 text = "You finally escaped the cabin! But now you're lost in the middle of the forest, with a snow storm raging around you..."
+choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_efxa6")])
 
 [node name="end_bad" type="Node" parent="Nodes"]
 script = ExtResource("1_ig7tw")
