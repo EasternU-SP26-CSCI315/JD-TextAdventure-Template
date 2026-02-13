@@ -1,0 +1,137 @@
+[gd_scene load_steps=14 format=3 uid="uid://ittcadmyqm8"]
+
+[ext_resource type="Script" uid="uid://bxm6v1dit5w7v" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://c688nq8fsmev7" path="res://story_scripts/story_node.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cgyk67vv44138" path="res://story_scripts/choice.gd" id="2_0xm2m"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7dm0k"]
+font_size = 40
+
+[sub_resource type="Resource" id="Resource_h2yge"]
+script = ExtResource("2_0xm2m")
+label = "Check out the mat by the door"
+go_to = NodePath("../door_mat")
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[sub_resource type="Resource" id="Resource_1bvp3"]
+script = ExtResource("2_0xm2m")
+label = "Go over to the bed"
+go_to = NodePath("../bed")
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[sub_resource type="Resource" id="Resource_7mycd"]
+script = ExtResource("2_0xm2m")
+label = "Use key on door"
+go_to = NodePath("../end_ok")
+condition = "has_key == true"
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[sub_resource type="Resource" id="Resource_0xm2m"]
+script = ExtResource("2_0xm2m")
+label = "Return"
+go_to = NodePath("../start")
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[sub_resource type="Resource" id="Resource_lquwl"]
+script = ExtResource("2_0xm2m")
+label = "Check underneath"
+go_to = NodePath("../key")
+do = "set has_key true"
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[sub_resource type="Resource" id="Resource_272bh"]
+script = ExtResource("2_0xm2m")
+label = "Return"
+go_to = NodePath("../start")
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[sub_resource type="Resource" id="Resource_5vw27"]
+script = ExtResource("2_0xm2m")
+label = "Return"
+go_to = NodePath("../start")
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[sub_resource type="Resource" id="Resource_kek77"]
+script = ExtResource("2_0xm2m")
+label = "Look under bed"
+go_to = NodePath("../end_bad")
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[sub_resource type="Resource" id="Resource_4c57u"]
+script = ExtResource("2_0xm2m")
+label = "End Game"
+go_to = NodePath("../end_bad")
+metadata/_custom_type_script = "uid://cgyk67vv44138"
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h2yge")
+
+[node name="StoryTextLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 42.0
+offset_right = -41.0
+offset_bottom = 209.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_7dm0k")
+autowrap_mode = 3
+
+[node name="ChoicesContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -280.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Button" type="Button" parent="ChoicesContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "aaa"
+
+[node name="Nodes" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="start" type="Node" parent="Nodes"]
+script = ExtResource("1_ig7tw")
+text = "You're in a cold, dark cabin. It is mostly empty except for a bed and a mat by the front door."
+choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_h2yge"), SubResource("Resource_1bvp3"), SubResource("Resource_7mycd")])
+
+[node name="door_mat" type="Node" parent="Nodes"]
+script = ExtResource("1_ig7tw")
+text = "A regular door mat by the only entrance to the cabin. It's soaked in cold water, mostly likely melted snow from outside."
+choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_0xm2m"), SubResource("Resource_lquwl")])
+
+[node name="key" type="Node" parent="Nodes"]
+script = ExtResource("1_ig7tw")
+text = "You found a key! It's not immediately clear what the key goes to."
+choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_272bh")])
+
+[node name="bed" type="Node" parent="Nodes"]
+script = ExtResource("1_ig7tw")
+text = "This bed sits in the corner of the room. Upon closer inspection, it looks more like a cot. It does not look very comfortable, though you are quite tired. You can hear some sort of high-pitched noise coming from underneath the bed. Is something wimpering under there?"
+choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_5vw27"), SubResource("Resource_kek77")])
+
+[node name="bed_monster" type="Node" parent="Nodes"]
+script = ExtResource("1_ig7tw")
+text = "Oh no! A terrible, shrieking monster was hiding under the bed! Looks like it's game over for you, pal."
+choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_4c57u")])
+
+[node name="end_ok" type="Node" parent="Nodes"]
+script = ExtResource("1_ig7tw")
+text = "You finally escaped the cabin! But now you're lost in the middle of the forest, with a snow storm raging around you..."
+
+[node name="end_bad" type="Node" parent="Nodes"]
+script = ExtResource("1_ig7tw")
+text = "Game over for you! You can either reload the game to play again, keep sitting here in stunned silence, or put down this \"game\" and never pick it up again!"
