@@ -2,7 +2,7 @@ extends Control
 class_name TextAdventureMain
 
 
-@export var start_node: NodePath = NodePath("start")
+@export var start_node: NodePath
 
 
 ## Keys pointing to bools, strings, or numbers
@@ -17,9 +17,9 @@ var current_node: StoryNode
 
 
 func _ready() -> void:
-	var start: StoryNode = resolve_story_node_from_path(start_node, nodes_root) as StoryNode
+	var start: StoryNode = resolve_story_node_from_path(start_node, self)
 	if not is_instance_valid(start):
-		push_error("Start node not found. start_node=%s (expected a StoryNode under %Nodes)" % [str(start_node)])
+		push_error("Start node not found. start_node=%s (expected a StoryNode under nodes_root)" % [str(start_node)])
 		return
 
 	go_to_node(start)
@@ -28,6 +28,8 @@ func _ready() -> void:
 ## Switches the text display to what is defined in the current StoryNode, then rebuilds the list of buttons
 func go_to_node(node: StoryNode) -> void:
 	current_node = node
+	# Could do some tweening here on story_text_label.visible_ratio or visible_characters
+	# Could also disable the buttons until the tween is done
 	story_text_label.text = current_node.text
 	rebuild_choices(current_node.choices)
 
@@ -44,7 +46,11 @@ func rebuild_choices(choice_list: Array[Choice]) -> void:
 			continue
 
 		var b := Button.new()
+		choices_box.add_child(b)
 		b.text = c.label
+		# This could be where some extra formatting options are set.
+		# Or, we could create a new scene with just a button inside it, then load that scene in
+		#    _ready and instantiate it here, with formatting all set up and ready to go.
 
 		# Connect a lambda function to the button's pressed signal
 		# We could absolutely create a function and pass it as a reference below, but this works just as well
@@ -65,8 +71,6 @@ func rebuild_choices(choice_list: Array[Choice]) -> void:
 			go_to_node(target)
 		)
 
-		# Finally, add the button to the node hierarchy
-		choices_box.add_child(b)
 
 
 #region Condition Checking
@@ -219,7 +223,7 @@ func resolve_story_node_from_path(path: NodePath, anchor: Node) -> StoryNode:
 	if not is_instance_valid(anchor) or path.is_empty():
 		return null
 
-	var n := anchor.get_node_or_null(path)
+	var n = anchor.get_node_or_null(path)
 	if n is StoryNode:
 		return n
 

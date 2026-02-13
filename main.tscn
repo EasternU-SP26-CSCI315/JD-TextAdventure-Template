@@ -5,12 +5,14 @@
 [ext_resource type="Script" uid="uid://cgyk67vv44138" path="res://story_scripts/choice.gd" id="2_0xm2m"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7dm0k"]
-font_size = 40
+font_size = 32
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Resource" id="Resource_h2yge"]
 script = ExtResource("2_0xm2m")
 label = "Check out the mat by the door"
-go_to = NodePath("../door_mat")
+go_to = NodePath("door_mat")
 metadata/_custom_type_script = "uid://cgyk67vv44138"
 
 [sub_resource type="Resource" id="Resource_1bvp3"]
@@ -29,13 +31,13 @@ metadata/_custom_type_script = "uid://cgyk67vv44138"
 [sub_resource type="Resource" id="Resource_0xm2m"]
 script = ExtResource("2_0xm2m")
 label = "Return"
-go_to = NodePath("../start")
+go_to = NodePath("..")
 metadata/_custom_type_script = "uid://cgyk67vv44138"
 
 [sub_resource type="Resource" id="Resource_lquwl"]
 script = ExtResource("2_0xm2m")
 label = "Check underneath"
-go_to = NodePath("../key")
+go_to = NodePath("../../key")
 do = "set has_key true"
 metadata/_custom_type_script = "uid://cgyk67vv44138"
 
@@ -54,13 +56,13 @@ metadata/_custom_type_script = "uid://cgyk67vv44138"
 [sub_resource type="Resource" id="Resource_kek77"]
 script = ExtResource("2_0xm2m")
 label = "Look under bed"
-go_to = NodePath("../end_bad")
+go_to = NodePath("bed_monster")
 metadata/_custom_type_script = "uid://cgyk67vv44138"
 
 [sub_resource type="Resource" id="Resource_4c57u"]
 script = ExtResource("2_0xm2m")
 label = "End Game"
-go_to = NodePath("../end_bad")
+go_to = NodePath("../../end_bad")
 metadata/_custom_type_script = "uid://cgyk67vv44138"
 
 [node name="Main" type="Control"]
@@ -71,6 +73,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h2yge")
+start_node = NodePath("Nodes/start")
 
 [node name="StoryTextLabel" type="Label" parent="."]
 unique_name_in_owner = true
@@ -78,27 +81,27 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 42.0
+offset_top = 37.0
 offset_right = -41.0
-offset_bottom = 209.0
+offset_bottom = 246.0
 grow_horizontal = 2
 label_settings = SubResource("LabelSettings_7dm0k")
 autowrap_mode = 3
 
 [node name="ChoicesContainer" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(550, 0)
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -18.0
 offset_top = -280.0
+offset_right = 18.0
 grow_horizontal = 2
 grow_vertical = 0
-
-[node name="Button" type="Button" parent="ChoicesContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "aaa"
 
 [node name="Nodes" type="Node" parent="."]
 unique_name_in_owner = true
@@ -108,7 +111,7 @@ script = ExtResource("1_ig7tw")
 text = "You're in a cold, dark cabin. It is mostly empty except for a bed and a mat by the front door."
 choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_h2yge"), SubResource("Resource_1bvp3"), SubResource("Resource_7mycd")])
 
-[node name="door_mat" type="Node" parent="Nodes"]
+[node name="door_mat" type="Node" parent="Nodes/start"]
 script = ExtResource("1_ig7tw")
 text = "A regular door mat by the only entrance to the cabin. It's soaked in cold water, mostly likely melted snow from outside."
 choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_0xm2m"), SubResource("Resource_lquwl")])
@@ -123,7 +126,7 @@ script = ExtResource("1_ig7tw")
 text = "This bed sits in the corner of the room. Upon closer inspection, it looks more like a cot. It does not look very comfortable, though you are quite tired. You can hear some sort of high-pitched noise coming from underneath the bed. Is something wimpering under there?"
 choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_5vw27"), SubResource("Resource_kek77")])
 
-[node name="bed_monster" type="Node" parent="Nodes"]
+[node name="bed_monster" type="Node" parent="Nodes/bed"]
 script = ExtResource("1_ig7tw")
 text = "Oh no! A terrible, shrieking monster was hiding under the bed! Looks like it's game over for you, pal."
 choices = Array[ExtResource("2_0xm2m")]([SubResource("Resource_4c57u")])
@@ -134,4 +137,4 @@ text = "You finally escaped the cabin! But now you're lost in the middle of the 
 
 [node name="end_bad" type="Node" parent="Nodes"]
 script = ExtResource("1_ig7tw")
-text = "Game over for you! You can either reload the game to play again, keep sitting here in stunned silence, or put down this \"game\" and never pick it up again!"
+text = "You got the bad ending! You can either reload the game to play again, keep sitting here in stunned silence, or put down this \"game\" and never pick it up again!"
